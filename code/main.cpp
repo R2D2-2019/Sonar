@@ -69,7 +69,8 @@ int main(void) {
     }
 
     uint16_t data_length = ((receive_byte(uart) << 8) | receive_byte(uart));
-    checksum += data_length;
+    checksum += ((data_length >> 8) & 0xFF);
+    checksum += (data_length & 0xFF);
     bytes_to_receive_count -= 2;
     (void)data_length;
 
@@ -79,17 +80,19 @@ int main(void) {
     (void)radar_speed;
 
     uint16_t zero_offset = ((receive_byte(uart) << 8) | receive_byte(uart));
-    checksum += zero_offset;
+    checksum += ((zero_offset >> 8) & 0xFF);
+    checksum += (zero_offset & 0xFF);
     bytes_to_receive_count -= 2;
     (void)zero_offset;
 
     uint16_t starting_angle = ((receive_byte(uart) << 8) | receive_byte(uart));
-    checksum += starting_angle;
+    checksum += ((starting_angle >> 8) & 0xFF);
+    checksum += (starting_angle & 0xFF);
     bytes_to_receive_count -= 2;
     (void)starting_angle;
 
     while(bytes_to_receive_count >= 0){
-      if(bytes_to_receive_count >= 3){
+      if(bytes_to_receive_count > 3){
         uint8_t signal_0 = receive_byte(uart);
         checksum += signal_0;
         bytes_to_receive_count -= 1;
@@ -97,13 +100,15 @@ int main(void) {
 
         uint16_t distance_value = ((receive_byte(uart) << 8) | receive_byte(uart));
 
-        checksum += distance_value;
+        checksum += ((distance_value >> 8) & 0xFF);
+        checksum += (distance_value & 0xFF);
         bytes_to_receive_count -= 2;
         (void)distance_value;
       }else{
         uint16_t check_code = ((receive_byte(uart) << 8) | receive_byte(uart));
         if(check_code == checksum){
           hwlib::cout << "Toppie!!\n";
+          hwlib::cout << "checksum: " << checksum << ", check_code: " << check_code << '\n';
           break;
         }else{
           hwlib::cout << "Jammer..\n";
