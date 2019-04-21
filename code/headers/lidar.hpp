@@ -1,4 +1,4 @@
-#include <hardware_usart.hpp>
+#include <usart_connection.hpp>
 
 namespace r2d2 {
     namespace measuring_distance {
@@ -39,8 +39,7 @@ namespace r2d2 {
             measurement_data_s measurements[720]; // 720 = 360 * 2. So we sample data every 0.5 degree.
 
         private:
-            r2d2::uart_ports_c usart_port;
-            r2d2::hardware_usart_c uart;
+            r2d2::usart_connection_c &uart;
             uint16_t checksum = 0x0000; // Checksum includes start byte (1) and excludes the check_code bytes (2)
 
         protected:
@@ -94,18 +93,9 @@ namespace r2d2 {
             /**
              * \brief This is the constructor of the lidar class
              *
-             * Because the constructor has default parameters it's not necessary to give any parameters, only when you want different settings.
-             *
-             * \param uart_port Using UART 1 for RX1 (pin 19), lidar doesn't use TX because we only receive data. 
-             * 
-             * \param baudrate We use baudrate of 224400 because the operating baudrate of the lidar module has to be 230400.
-             * But because the usart lib rounds wrong in the code because of unsigned int rounding (22.75 becomes 22), to get the
-             * best value (23) we have to put a wrong baudrate that rounds to the good register value 23.
-             * 5241600 / 230400 = (int)22.75 = 22 -> 0.75 away from actual lidar baudrate value
-             * 5241600 / 224400 = (int)23.36 = 23  ->  0.25 away from actual lidar baudrate value
-             * This means that 224400 is the best value to put in the constructor.
+             * \param uart_conn The USART connection that should be used.
              */
-            lidar_c(r2d2::uart_ports_c uart_port = r2d2::uart_ports_c::uart1, unsigned int baudrate = 224400);
+            lidar_c(r2d2::usart_connection_c& uart_conn);
 
             /**
              * \brief This fucntion reads a total of one packet of data from the lidar.

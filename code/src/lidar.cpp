@@ -62,10 +62,9 @@ namespace r2d2::measuring_distance {
         }
     }
 
-    lidar_c::lidar_c(r2d2::uart_ports_c uart_port, unsigned int baudrate)
+    lidar_c::lidar_c(r2d2::usart_connection_c& uart_conn)
         : measurements({}),
-        usart_port(uart_port),
-        uart(r2d2::hardware_usart_c(baudrate, usart_port))
+        uart(uart_conn)
     {};
 
     bool lidar_c::receive_packet() {
