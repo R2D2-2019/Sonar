@@ -8,8 +8,7 @@
 TEST_CASE("mock_usart::receive(), mock_usart::prepare_message()") {
     std::vector<uint8_t> message = {11, 13, 23, 55, 66, 83, 42};
 
-    r2d2::test_usart_c usart;
-
+    r2d2::mock_usart_c usart;
     usart.prepare_message(message);
 
     for (const uint8_t &b : message) {
@@ -21,12 +20,10 @@ TEST_CASE("Lidar - receive valid error packet") {
     std::vector<uint8_t> message = {0xAA, 0x00, 0x09, 0x00, 0x61, 0xAE,
                                     0x00, 0x01, 0xC9, 0x02, 0x8C};
 
-    r2d2::test_usart_c usart;
-
+    r2d2::mock_usart_c usart;
     usart.prepare_message(message);
 
     r2d2::measuring_distance::lidar_c lidar(usart);
-
     REQUIRE(lidar.receive_packet());
 
     REQUIRE(lidar.header.frame_length == 0x0009);
@@ -44,12 +41,10 @@ TEST_CASE("Lidar - receive valid packet with invalid checksum") {
     std::vector<uint8_t> message = {0xAA, 0x00, 0x09, 0x00, 0x61, 0xAE,
                                     0x00, 0x01, 0xC9, 0x02, 0x8D};
 
-    r2d2::test_usart_c usart;
-
+    r2d2::mock_usart_c usart;
     usart.prepare_message(message);
 
     r2d2::measuring_distance::lidar_c lidar(usart);
-
     REQUIRE(!lidar.receive_packet());
 }
 
@@ -58,12 +53,10 @@ TEST_CASE("Lidar - invalid frame type") {
         0xAA, 0x00, 0x09, 0x00, 0x42, // wrong value: 0x42 should be 0x61
         0xAE, 0x00, 0x01, 0xC9, 0x02, 0x8D};
 
-    r2d2::test_usart_c usart;
-
+    r2d2::mock_usart_c usart;
     usart.prepare_message(message);
 
     r2d2::measuring_distance::lidar_c lidar(usart);
-
     REQUIRE(!lidar.receive_packet());
 }
 
@@ -72,12 +65,10 @@ TEST_CASE("Lidar - unknown command word") {
                                     0x2E, // 0x2E isnt a valid command
                                     0x00, 0x01, 0xC9, 0x02, 0x8D};
 
-    r2d2::test_usart_c usart;
-
+    r2d2::mock_usart_c usart;
     usart.prepare_message(message);
 
     r2d2::measuring_distance::lidar_c lidar(usart);
-
     REQUIRE(!lidar.receive_packet());
 }
 
@@ -102,12 +93,10 @@ TEST_CASE("Lidar - receive valid data packet") {
         sum += b;
     }
 
-    r2d2::test_usart_c usart;
-
+    r2d2::mock_usart_c usart;
     usart.prepare_message(message);
 
     r2d2::measuring_distance::lidar_c lidar(usart);
-
     REQUIRE(lidar.receive_packet());
 
     // check the header
@@ -121,30 +110,25 @@ TEST_CASE("Lidar - receive valid data packet") {
     REQUIRE(lidar.header.starting_angle == 0x6978);
 
     // check the distance measurements
-    unsigned int count = 0;
-    for (int i = 0; i < lidar.header.data_length - 5; i += 3) {
-        auto signal = message[i + 13];
-        uint16_t dist = message[i + 13 + 1] << 8 | message[i + 13 + 2];
+    const unsigned int number_of_measurements =
+        (lidar.header.data_length - 5) / 3;
+    const float offset = 22.5 / number_of_measurements;
+    const float start_angle = lidar.header.starting_angle * 0.01;
 
-        float angle = (lidar.header.starting_angle * 0.01) +
-                      (count * 22.5) / ((lidar.header.data_length - 5) / 3);
+    for (unsigned int i = 0; i < number_of_measurements; i++) {
+        unsigned int angle = (start_angle + (i * offset)) * 2;
 
-        unsigned int index = angle * 2;
+        unsigned int next_angle = (start_angle + ((i + 1) * offset)) * 2;
 
-        count++;
-        
-        float next_angle =
-            (lidar.header.starting_angle * 0.01) +
-            (count * 22.5) / ((lidar.header.data_length - 5) / 3);
-
-        unsigned int next_index = next_angle * 2;
-
-        if (next_index == index) {
+        if (next_angle == angle) {
             // the value is overwritten by the next one, skip the checks
             continue;
         }
 
-        REQUIRE(lidar.measurements[index].signal == signal);
-        REQUIRE(lidar.measurements[index].distance_value == dist);
+        uint8_t signal = message[(i * 3) + 13];
+        uint16_t dist = message[(i * 3) + 14] << 8 | message[(i * 3) + 15];
+
+        REQUIRE(lidar.measurements[angle].signal == signal);
+        REQUIRE(lidar.measurements[angle].distance_value == dist);
     }
 }
