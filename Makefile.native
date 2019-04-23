@@ -1,0 +1,25 @@
+#############################################################################
+#
+# makefile.native common settings for Native projects
+#
+# (c) Wouter van Ooijen (www.voti.nl) 2017
+#
+# This file is in the public domain.
+# 
+#############################################################################
+
+# settings for native (PC) projects
+TARGET            := native
+
+# enable exeptions (disabled by default by bmptk)
+PROJECT_CPP_FLAGS += -fexceptions 
+
+# add USART, this can't be done using the makefile.inc because of compile errors of the hardware implementation
+USART             ?= ../../../libraries/USART_library
+SEARCH  += $(USART)/code/headers
+SEARCH  += $(USART)/code/src
+SOURCES += $(USART)/code/src/usart_connection.cpp
+HEADERS += $(USART)/code/headers/usart_connection.hpp
+
+# defer to the Makefile.shared
+include           $(RELATIVE)/Makefile.link
