@@ -3,7 +3,7 @@
 #include <cstdint>
 
 namespace r2d2 {
-    namespace measuring_distance {
+    namespace distance {
         /**
          * \brief This struct contains the header data of a packet
          *
@@ -41,5 +41,5 @@ namespace r2d2 {
                             // the lidar, not sure.
             uint16_t distance_value; // distance in milimeter.
         };
-    } // namespace measuring_distance
+    } // namespace distance
 } // namespace r2d2

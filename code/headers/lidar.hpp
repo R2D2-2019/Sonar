@@ -1,8 +1,10 @@
+#pragma once
+
 #include <lidar_packets.hpp>
 #include <usart_connection.hpp>
 
 namespace r2d2 {
-    namespace measuring_distance {
+    namespace distance {
         /**
          * \brief This class makes it easy to read and extract data from the
          * lidar using uart.
@@ -16,8 +18,19 @@ namespace r2d2 {
 
         private:
             r2d2::usart_connection_c &uart;
-            uint16_t checksum = 0x0000; // Checksum includes start byte (1) and
-                                        // excludes the check_code bytes (2)
+            // Checksum includes start byte (1) and
+            //  excludes the check_code bytes (2)
+            uint16_t checksum = 0x0000;
+            // the frametype is always 0x61
+            static constexpr uint8_t frame_type_value = 0x61;
+            // the protocol version is always 0x00 for error messages
+            static constexpr uint8_t error_protocol_version = 0x00;
+            // the protocol version is always 0x01 for data messages
+            static constexpr uint8_t data_protocol_version = 0x01;
+            // the command word is always 0xAE for error messages
+            static constexpr uint8_t error_command_word = 0xAE;
+            // the command word is always 0xAD for data messages
+            static constexpr uint8_t data_command_word = 0xAD;
 
         protected:
             /**
@@ -106,5 +119,5 @@ namespace r2d2 {
              */
             bool receive_packet();
         };
-    } // namespace measuring_distance
+    } // namespace distance
 } // namespace r2d2

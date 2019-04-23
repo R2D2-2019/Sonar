@@ -1,6 +1,6 @@
 #include <lidar.hpp>
 
-namespace r2d2::measuring_distance {
+namespace r2d2::distance {
     uint8_t lidar_c::receive_uint8() {
         for (;;) {
             if (uart.available() > 0) {
@@ -32,17 +32,18 @@ namespace r2d2::measuring_distance {
         header.data_length = receive_uint16();
         header.radar_speed = receive_uint8();
 
-        if (header.frame_type != 0x61) {
+        if (header.frame_type != frame_type_value) {
             // ERROR
             return false;
         }
 
-        if (header.protocol_version == 0x01 && header.command_word == 0xAD) {
+        if (header.protocol_version == data_protocol_version &&
+            header.command_word == data_command_word) {
             header.zero_offset = receive_uint16();
             header.starting_angle = receive_uint16();
             return true;
-        } else if (header.protocol_version == 0x00 &&
-                   header.command_word == 0xAE) {
+        } else if (header.protocol_version == error_protocol_version &&
+                   header.command_word == error_command_word) {
             header.zero_offset = 0xFFFF;
             header.starting_angle = 0xFFFF;
             return true;
@@ -70,22 +71,15 @@ namespace r2d2::measuring_distance {
 
     bool lidar_c::receive_packet() {
         wait_for_startbyte();
-        if (!receive_packet_header() || header.command_word != 0xAD) {
-            if (header.command_word != 0xAE) {
+        if (!receive_packet_header() ||
+            header.command_word != data_command_word) {
+            if (header.command_word != error_command_word) {
                 return false;
             }
-            if (checksum == receive_uint16()) {
-                return true;
-            } else {
-                return false;
-            }
+            return (checksum == receive_uint16());
         }
         receive_measurement_data();
 
-        if (checksum == receive_uint16()) {
-            return true;
-        } else {
-            return false;
-        }
+        return (checksum == receive_uint16());
     }
-} // namespace r2d2::measuring_distance
+} // namespace r2d2::distance

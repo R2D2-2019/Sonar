@@ -23,7 +23,7 @@ TEST_CASE("Lidar - receive valid error packet") {
     r2d2::mock_usart_c usart;
     usart.prepare_message(message);
 
-    r2d2::measuring_distance::lidar_c lidar(usart);
+    r2d2::distance::lidar_c lidar(usart);
     REQUIRE(lidar.receive_packet());
 
     REQUIRE(lidar.header.frame_length == 0x0009);
@@ -44,7 +44,7 @@ TEST_CASE("Lidar - receive valid packet with invalid checksum") {
     r2d2::mock_usart_c usart;
     usart.prepare_message(message);
 
-    r2d2::measuring_distance::lidar_c lidar(usart);
+    r2d2::distance::lidar_c lidar(usart);
     REQUIRE(!lidar.receive_packet());
 }
 
@@ -56,7 +56,7 @@ TEST_CASE("Lidar - invalid frame type") {
     r2d2::mock_usart_c usart;
     usart.prepare_message(message);
 
-    r2d2::measuring_distance::lidar_c lidar(usart);
+    r2d2::distance::lidar_c lidar(usart);
     REQUIRE(!lidar.receive_packet());
 }
 
@@ -68,7 +68,7 @@ TEST_CASE("Lidar - unknown command word") {
     r2d2::mock_usart_c usart;
     usart.prepare_message(message);
 
-    r2d2::measuring_distance::lidar_c lidar(usart);
+    r2d2::distance::lidar_c lidar(usart);
     REQUIRE(!lidar.receive_packet());
 }
 
@@ -96,7 +96,7 @@ TEST_CASE("Lidar - receive valid data packet") {
     r2d2::mock_usart_c usart;
     usart.prepare_message(message);
 
-    r2d2::measuring_distance::lidar_c lidar(usart);
+    r2d2::distance::lidar_c lidar(usart);
     REQUIRE(lidar.receive_packet());
 
     // check the header
