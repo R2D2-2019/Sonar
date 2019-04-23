@@ -37,13 +37,13 @@ namespace r2d2::distance {
             return false;
         }
 
-        if (header.protocol_version == data_protocol_version &&
-            header.command_word == data_command_word) {
+        if (header.protocol_version == data_protocol_version_value &&
+            header.command_word == data_command_word_value) {
             header.zero_offset = receive_uint16();
             header.starting_angle = receive_uint16();
             return true;
-        } else if (header.protocol_version == error_protocol_version &&
-                   header.command_word == error_command_word) {
+        } else if (header.protocol_version == error_protocol_version_value &&
+                   header.command_word == error_command_word_value) {
             header.zero_offset = 0xFFFF;
             header.starting_angle = 0xFFFF;
             return true;
@@ -76,8 +76,8 @@ namespace r2d2::distance {
     bool lidar_c::receive_packet() {
         wait_for_startbyte();
         if (!receive_packet_header() ||
-            header.command_word != data_command_word) {
-            if (header.command_word != error_command_word) {
+            header.command_word != data_command_word_value) {
+            if (header.command_word != error_command_word_value) {
                 return false;
             }
             return (checksum == receive_uint16());
