@@ -15,7 +15,7 @@ int main(void) {
     // actual lidar baudrate value 5241600 / 224400 = (int)23.36 = 23  ->  0.25
     // away from actual lidar baudrate value This means that 224400 is the best
     // value to put in the constructor.
-    r2d2::hardware_usart_c usart(224400, r2d2::uart_ports_c::uart1);
+    auto usart = r2d2::hardware_usart_c(224400, r2d2::uart_ports_c::uart1);
 
     auto lidar = r2d2::distance::lidar_c(usart);
 
