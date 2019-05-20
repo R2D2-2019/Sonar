@@ -2,6 +2,7 @@
 #include <lidar.hpp>
 #include <hardware_usart.hpp>
 #include <comm.hpp>
+#include "test_module.hpp"
 
 int main(void) {
     using namespace r2d2;
@@ -12,6 +13,7 @@ int main(void) {
     hwlib::wait_ms(10);
 
     r2d2::comm_c comm;
+    //r2d2::comm_c comm2;
 
     // We use baudrate of 224400 because the operating baudrate of the lidar
     // module has to be 230400. But because the usart lib rounds wrong in the
@@ -28,7 +30,11 @@ int main(void) {
 
     distance::module_c module(comm, lidar);
 
+    // Test module for sending a request
+    //distance::test_module_c test_module(comm2);
+
     for(;;) {
+        //test_module.process();
         module.process();
     }
 
