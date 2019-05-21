@@ -4,6 +4,7 @@
 #include <lidar.hpp>
 #include <hardware_usart.hpp>
 
+// This is the main module class that measures 
 namespace r2d2::distance {
     class module_c : public base_module_c {
         private:
@@ -46,19 +47,22 @@ namespace r2d2::distance {
                         if (count == 10) {
                             for (int i = 0; i < 720; i++) {
 								
-                                if ((lidar.measurements[i].distance_value / 4) != 0 && smallest_value_set_first_time == false) {
-                                    smallest_value = (lidar.measurements[i].distance_value / 4);
+								current_value = (lidar.measurements[i].distance_value / 4);
+								
+                                // Set the smallest distance that is not 0 for the first time
+                                if ((current_value != 0 && smallest_value_set_first_time == false) {
+                                    smallest_value = current_value;
                                     smallest_value_set_first_time = true;
                                 }
                                 hwlib::cout << "smallest value: " << smallest_value << '\n';
                                 
                                 hwlib::cout << "Angle: " << i << " measurement: "
-                                            << (lidar.measurements[i].distance_value / 4)
+                                            << current_value
                                             << '\n';
                                 
-                                current_value = (lidar.measurements[i].distance_value / 4);
                                 
-                                if ((lidar.measurements[i].distance_value / 4) != 0 && current_value < smallest_value ) {
+                                
+                                if ((current_value != 0 && current_value < smallest_value ) {
                                     smallest_value = current_value;
                                 }
                             }

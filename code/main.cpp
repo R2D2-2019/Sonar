@@ -13,7 +13,7 @@ int main(void) {
     hwlib::wait_ms(10);
 
     r2d2::comm_c comm;
-    //r2d2::comm_c comm2;
+    r2d2::comm_c comm2;
 
     // We use baudrate of 224400 because the operating baudrate of the lidar
     // module has to be 230400. But because the usart lib rounds wrong in the
@@ -24,17 +24,17 @@ int main(void) {
     // away from actual lidar baudrate value This means that 224400 is the best
     // value to put in the constructor.
 
-    auto usart = r2d2::usart::hardware_usart_c(224400, r2d2::usart::usart_ports::uart1);
+    auto usart = r2d2::hardware_usart_c(224400, r2d2::usart_ports_c::uart1);
 
     auto lidar = r2d2::distance::lidar_c(usart);
 
     distance::module_c module(comm, lidar);
 
-    // Test module for sending a request
-    //distance::test_module_c test_module(comm2);
+    //Test module for sending a request
+    distance::test_module_c test_module(comm2);
 
     for(;;) {
-        //test_module.process();
+        test_module.process();
         module.process();
     }
 
