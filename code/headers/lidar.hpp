@@ -17,7 +17,7 @@ namespace r2d2 {
                                                   // data every 0.5 degree.
 
         private:
-            r2d2::hardware_usart_c &uart;
+            r2d2::usart::usart_connection_c &uart;
             uint16_t checksum = 0x0000; // Checksum includes start byte (1) and excludes the check_code bytes (2)
 
             // Static values that don't change.
@@ -89,7 +89,7 @@ namespace r2d2 {
              *
              * \param uart_conn The USART connection that should be used.
              */
-            lidar_c(r2d2::hardware_usart_c &uart_conn);
+            lidar_c(r2d2::usart::usart_connection_c &uart_conn);
 
             /**
              * \brief This fucntion reads a total of one packet of data from the

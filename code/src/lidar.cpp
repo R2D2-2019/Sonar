@@ -23,6 +23,9 @@ namespace r2d2::distance {
             }
         }
     }
+    
+
+    
 
     bool lidar_c::receive_packet_header() {
         header.frame_length = receive_uint16();
@@ -70,7 +73,7 @@ namespace r2d2::distance {
         }
     }
 
-    lidar_c::lidar_c(r2d2::hardware_usart_c &uart_conn)
+    lidar_c::lidar_c(r2d2::usart::usart_connection_c &uart_conn)
         : measurements({}), uart(uart_conn){};
 
     bool lidar_c::receive_packet() {
