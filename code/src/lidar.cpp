@@ -4,7 +4,7 @@ namespace r2d2::distance {
     uint8_t lidar_c::receive_uint8() {
         for (;;) {
             // The program gets stuck on uart.available when executed from the process() 
-            // function via receive_packet (works fine when executed from main.cpp)
+            // function via receive_packet() (in module.hpp,works fine when executed from main.cpp)
             if (uart.available() > 0) { 
                 uint8_t byte = uart.receive();
                 checksum += byte;

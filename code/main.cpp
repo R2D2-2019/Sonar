@@ -9,8 +9,8 @@ int main(void) {
 
     // kill the watchdog
     WDT->WDT_MR = WDT_MR_WDDIS;
-    // Wait 1 sec for starting the program to get good results.
-    hwlib::wait_ms(10);
+    // Wait for starting the program to get good results.
+    hwlib::wait_ms(1000);
     r2d2::comm_c comm;
     // comm for the test module
     r2d2::comm_c comm2;
