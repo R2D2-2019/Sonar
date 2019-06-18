@@ -14,12 +14,9 @@ TARGET            := native
 # enable exeptions (disabled by default by bmptk)
 PROJECT_CPP_FLAGS += -fexceptions 
 
-# add USART, this can't be done using the makefile.inc because of compile errors of the hardware implementation
+# add USART
 USART             ?= ../../../libraries/USART_library
-SEARCH  += $(USART)/code/headers
-SEARCH  += $(USART)/code/src
-SOURCES += $(USART)/code/src/usart_connection.cpp
-HEADERS += $(USART)/code/headers/usart_connection.hpp
+include           $(USART)/Makefile.inc
 
 # defer to the Makefile.shared
 include           $(RELATIVE)/Makefile.link
