@@ -1,12 +1,20 @@
-#include <hardware_usart.hpp>
+#include "module.hpp"
 #include <lidar.hpp>
+#include <hardware_usart.hpp>
+#include <comm.hpp>
+#include "test_module.hpp"
 
 
 int main(void) {
+    using namespace r2d2;
+
     // kill the watchdog
     WDT->WDT_MR = WDT_MR_WDDIS;
-    // Wait 1 sec for starting the program to get good results.
+    // Wait for starting the program to get good results.
     hwlib::wait_ms(1000);
+    r2d2::comm_c comm;
+    // comm for the test module
+    r2d2::comm_c comm2;
 
     // We use baudrate of 224400 because the operating baudrate of the lidar
     // module has to be 230400. But because the usart lib rounds wrong in the
@@ -19,25 +27,13 @@ int main(void) {
     auto usart = r2d2::usart::hardware_usart_c<r2d2::usart::usart0>(224400);
 
     auto lidar = r2d2::distance::lidar_c(usart);
-    int measure = 0;
-    for (int count = 0;; count++) {
-        // 16 packets for one 360 degree measurement
-        for (int count = 0; count < 16; count++) {
-            lidar.receive_packet();
-            //hwlib::cout << '\n'<<lidar.header;
-        }
 
-        // Every 100 360 degree measurements we print the distance for every
-        // half degree.
-        if (count == 100) {
-            measure++;
-            hwlib::cout<<measure<<'\n';
-            for (int i = 0; i < 720; i++) {
-                hwlib::cout << "Angle: " << i << lidar.measurements[i]
-                            << '\n';
-            }
-            
-            count = 0;
-        }
+    //Test module for sending a request
+    distance::test_module_c test_module(comm2);
+    distance::module_c module(comm, lidar);
+
+    for(;;) {
+        test_module.process();
+        module.process();
     }
 }
