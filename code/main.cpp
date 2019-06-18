@@ -4,6 +4,7 @@
 #include <comm.hpp>
 #include "test_module.hpp"
 
+
 int main(void) {
     using namespace r2d2;
 
@@ -23,8 +24,7 @@ int main(void) {
     // actual lidar baudrate value 5241600 / 224400 = (int)23.36 = 23  ->  0.25
     // away from actual lidar baudrate value This means that 224400 is the best
     // value to put in the constructor.
-
-    auto usart = r2d2::usart::hardware_usart_c(224400, r2d2::usart::usart_ports::uart1);
+    auto usart = r2d2::usart::hardware_usart_c<r2d2::usart::usart0>(224400);
 
     auto lidar = r2d2::distance::lidar_c(usart);
 
@@ -36,5 +36,4 @@ int main(void) {
         test_module.process();
         module.process();
     }
-
 }

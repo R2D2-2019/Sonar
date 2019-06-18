@@ -1,7 +1,7 @@
 #pragma once
 
 #include <lidar_packets.hpp>
-#include <hardware_usart.hpp>
+#include <usart_connection.hpp>
 
 namespace r2d2 {
     namespace distance {

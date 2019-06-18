@@ -25,6 +25,9 @@ namespace r2d2::distance {
             }
         }
     }
+    
+
+    
 
     bool lidar_c::receive_packet_header() {
         header.frame_length = receive_uint16();
