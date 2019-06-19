@@ -18,14 +18,20 @@ namespace r2d2 {
 
         private:
             r2d2::usart::usart_connection_c &uart;
-            uint16_t checksum = 0x0000; // Checksum includes start byte (1) and excludes the check_code bytes (2)
+            uint16_t checksum = 0x0000; // Checksum includes start byte (1) and
+                                        // excludes the check_code bytes (2)
 
             // Static values that don't change.
-            static constexpr uint8_t frame_type_value = 0x61; // The frametype is always 0x61.
-            static constexpr uint8_t error_protocol_version_value = 0x00; // The protocol version is always 0x00 for error messages.
-            static constexpr uint8_t data_protocol_version_value = 0x01; // The protocol version is always 0x01 for data messages.
-            static constexpr uint8_t error_command_word_value = 0xAE; // The command word is always 0xAE for error messages.
-            static constexpr uint8_t data_command_word_value = 0xAD; // The command word is always 0xAD for data messages.
+            // The frametype is always 0x61.
+            static constexpr uint8_t frame_type_value = 0x61;
+            // The protocol version is always 0x00 for error messages.
+            static constexpr uint8_t error_protocol_version_value = 0x00;
+            // The protocol version is always 0x01 for data messages.
+            static constexpr uint8_t data_protocol_version_value = 0x01;
+            // The command word is always 0xAE for error messages.
+            static constexpr uint8_t error_command_word_value = 0xAE;
+            // The command word is always 0xAD for data messages.
+            static constexpr uint8_t data_command_word_value = 0xAD;
 
         protected:
             /**

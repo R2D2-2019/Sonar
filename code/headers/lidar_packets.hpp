@@ -3,7 +3,6 @@
 #include <cstdint>
 #include <hwlib.hpp>
 
-
 namespace r2d2 {
     namespace distance {
         /**
@@ -33,14 +32,13 @@ namespace r2d2 {
             uint16_t zero_offset;
             uint16_t starting_angle;
         };
-        /** 
-        * \brief <<Operator for lidar_packet_header_s struct returns in hexadecimal 
-        * data is pushed on the stream up to down        
-        */
-        hwlib::ostream &operator<<(hwlib::ostream &stream, const lidar_packet_header_s &lphs);
-        
-        
-        
+        /**
+         * \brief <<Operator for lidar_packet_header_s struct returns in
+         * hexadecimal data is pushed on the stream up to down
+         */
+        hwlib::ostream &operator<<(hwlib::ostream &stream,
+                                   const lidar_packet_header_s &lphs);
+
         /**
          * \brief This struct contains the date of one single distancec
          * measurement.
@@ -50,11 +48,12 @@ namespace r2d2 {
                             // the lidar, not sure.
             uint16_t distance_value; // distance in milimeter.
         };
-        /** 
-        * \brief <<Operator for measurement_data_s struct returns in decimal 
-        * data is pushed on the stream up to down        
-        */
-        hwlib::ostream &operator<<(hwlib::ostream &stream, const measurement_data_s &mds);
-        
+        /**
+         * \brief <<Operator for measurement_data_s struct returns in decimal
+         * data is pushed on the stream up to down
+         */
+        hwlib::ostream &operator<<(hwlib::ostream &stream,
+                                   const measurement_data_s &mds);
+
     } // namespace distance
 } // namespace r2d2

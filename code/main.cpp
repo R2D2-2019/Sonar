@@ -1,9 +1,8 @@
 #include "module.hpp"
-#include <lidar.hpp>
-#include <hardware_usart.hpp>
-#include <comm.hpp>
 #include "test_module.hpp"
-
+#include <comm.hpp>
+#include <hardware_usart.hpp>
+#include <lidar.hpp>
 
 int main(void) {
     using namespace r2d2;
@@ -28,11 +27,11 @@ int main(void) {
 
     auto lidar = r2d2::distance::lidar_c(usart);
 
-    //Test module for sending a request
+    // Test module for sending a request
     distance::test_module_c test_module(comm2);
     distance::module_c module(comm, lidar);
 
-    for(;;) {
+    for (;;) {
         test_module.process();
         module.process();
     }

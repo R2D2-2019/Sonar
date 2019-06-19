@@ -3,9 +3,10 @@
 namespace r2d2::distance {
     uint8_t lidar_c::receive_uint8() {
         for (;;) {
-            // The program gets stuck on uart.available when executed from the process() 
-            // function via receive_packet() (in module.hpp,works fine when executed from main.cpp)
-            if (uart.available() > 0) { 
+            // The program gets stuck on uart.available when executed from the
+            // process() function via receive_packet() (in module.hpp,works fine
+            // when executed from main.cpp)
+            if (uart.available() > 0) {
                 uint8_t byte = uart.receive();
                 checksum += byte;
                 return byte;
@@ -25,9 +26,6 @@ namespace r2d2::distance {
             }
         }
     }
-    
-
-    
 
     bool lidar_c::receive_packet_header() {
         header.frame_length = receive_uint16();
@@ -65,10 +63,11 @@ namespace r2d2::distance {
             // measurement_angle = starting_angle + (((measurement_count - 1)
             // * 22.5) / total_points_per_frame) This formula is extracted from
             // the datasheet of the lidar communication protocol.
-            // 
-            // We multiplied everything times 10 in the formula to don't have to use floating point numbers. 
-            // At the end we devide by 5 to round at halve degrees so we fill the 720 values in the measurements array to get
-            // more accurate measurements.
+            //
+            // We multiplied everything times 10 in the formula to don't have to
+            // use floating point numbers. At the end we devide by 5 to round at
+            // halve degrees so we fill the 720 values in the measurements array
+            // to get more accurate measurements.
             measurements[((header.starting_angle / 10) +
                           ((count * (225)) / ((header.data_length - 5) / 3))) /
                          5] = {receive_uint8(), receive_uint16()};

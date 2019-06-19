@@ -1,16 +1,18 @@
 #include "ostream"
 #define CATCH_CONFIG_MAIN
-#include <catch.hpp>
 #include <algorithm>
+#include <catch.hpp>
+
 
 #include <lidar.hpp>
 #include <test_usart.hpp>
 
 // Helper function to place a message in the usart buffer
-void prepare_message(r2d2::usart::test_usart_c& usart, const std::vector<uint8_t>& message){
-    std::for_each(message.begin(), message.end(), [&usart](const uint8_t& byte){
-        usart.add_receive_byte(byte);
-    });
+void prepare_message(r2d2::usart::test_usart_c &usart,
+                     const std::vector<uint8_t> &message) {
+    std::for_each(
+        message.begin(), message.end(),
+        [&usart](const uint8_t &byte) { usart.add_receive_byte(byte); });
 }
 
 TEST_CASE("Lidar - receive valid error packet") {
