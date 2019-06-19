@@ -2,7 +2,6 @@
 
 #include <base_module.hpp>
 #include <lidar.hpp>
-#include <hardware_usart.hpp>
 
 // This is the main module class that measures the smallest distance and sends it on the canbus
 namespace r2d2::distance {
@@ -53,18 +52,11 @@ namespace r2d2::distance {
                                     smallest_value = current_value;
                                     smallest_value_set_first_time = true;
                                 }
-
-                                hwlib::cout << "smallest value: " << smallest_value << '\n';
-                                
-                                hwlib::cout << "Angle: " << i << " measurement: "
-                                            << current_value
-                                            << '\n';
                                 
                                 if ((current_value != 0 && current_value < smallest_value )) {
                                     smallest_value = current_value;
                                 }
                             }
-                            hwlib::cout << '\n';
                         }
 					// The smallest measured value(besides 0) will go into the frame
 					// and will be send
