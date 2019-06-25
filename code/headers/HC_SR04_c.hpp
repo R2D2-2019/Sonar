@@ -25,7 +25,6 @@ namespace R2D2::Distance
         * return measured distance in centimeters.
         */
         int16_t get_distance();
-        
     };
 }
 
