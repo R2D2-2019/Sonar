@@ -14,7 +14,7 @@ namespace r2d2::distance {
     /// sends the smallest detected distance over the can-bus.
     class module_c : public base_module_c {
     private:
-        lidar_c lidar;
+        lidar_c& lidar;
 
         uint16_t smallest_value;
         uint16_t current_value;
