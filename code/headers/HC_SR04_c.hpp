@@ -17,7 +17,7 @@ namespace R2D2::Distance
         hwlib::pin_in & echo_pin;       //Listens to a high value from returning ultrasone sounds
         hwlib::pin_out & trigger_pin;   //Triggers the sensor to send out a ultrasone frequency
     public:
-        HC_SR04_c(hwlib::target::pin_in & echo_pin, hwlib::target::pin_out & trigger_pin)
+        HC_SR04_c(hwlib::pin_in & echo_pin, hwlib::pin_out & trigger_pin)
         :   echo_pin(echo_pin), trigger_pin(trigger_pin)
             {}
         /**
