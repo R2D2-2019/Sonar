@@ -1,27 +1,26 @@
 #include "ostream"
 #define CATCH_CONFIG_MAIN
+#include <algorithm>
 #include <catch.hpp>
 
+
 #include <lidar.hpp>
-#include <mock_usart.hpp>
+#include <test_usart.hpp>
 
-TEST_CASE("mock_usart::receive(), mock_usart::prepare_message()") {
-    std::vector<uint8_t> message = {11, 13, 23, 55, 66, 83, 42};
-
-    r2d2::mock_usart_c usart;
-    usart.prepare_message(message);
-
-    for (const uint8_t &b : message) {
-        REQUIRE(b == usart.receive());
-    }
+// Helper function to place a message in the usart buffer
+void prepare_message(r2d2::usart::test_usart_c &usart,
+                     const std::vector<uint8_t> &message) {
+    std::for_each(
+        message.begin(), message.end(),
+        [&usart](const uint8_t &byte) { usart.add_receive_byte(byte); });
 }
 
 TEST_CASE("Lidar - receive valid error packet") {
     std::vector<uint8_t> message = {0xAA, 0x00, 0x09, 0x00, 0x61, 0xAE,
                                     0x00, 0x01, 0xC9, 0x02, 0x8C};
 
-    r2d2::mock_usart_c usart;
-    usart.prepare_message(message);
+    auto usart = r2d2::usart::test_usart_c();
+    prepare_message(usart, message);
 
     r2d2::distance::lidar_c lidar(usart);
     REQUIRE(lidar.receive_packet());
@@ -41,8 +40,8 @@ TEST_CASE("Lidar - receive valid packet with invalid checksum") {
     std::vector<uint8_t> message = {0xAA, 0x00, 0x09, 0x00, 0x61, 0xAE,
                                     0x00, 0x01, 0xC9, 0x02, 0x8D};
 
-    r2d2::mock_usart_c usart;
-    usart.prepare_message(message);
+    auto usart = r2d2::usart::test_usart_c();
+    prepare_message(usart, message);
 
     r2d2::distance::lidar_c lidar(usart);
     REQUIRE(!lidar.receive_packet());
@@ -53,8 +52,8 @@ TEST_CASE("Lidar - invalid frame type") {
         0xAA, 0x00, 0x09, 0x00, 0x42, // wrong value: 0x42 should be 0x61
         0xAE, 0x00, 0x01, 0xC9, 0x02, 0x8D};
 
-    r2d2::mock_usart_c usart;
-    usart.prepare_message(message);
+    auto usart = r2d2::usart::test_usart_c();
+    prepare_message(usart, message);
 
     r2d2::distance::lidar_c lidar(usart);
     REQUIRE(!lidar.receive_packet());
@@ -65,8 +64,8 @@ TEST_CASE("Lidar - unknown command word") {
                                     0x2E, // 0x2E isnt a valid command
                                     0x00, 0x01, 0xC9, 0x02, 0x8D};
 
-    r2d2::mock_usart_c usart;
-    usart.prepare_message(message);
+    auto usart = r2d2::usart::test_usart_c();
+    prepare_message(usart, message);
 
     r2d2::distance::lidar_c lidar(usart);
     REQUIRE(!lidar.receive_packet());
@@ -88,13 +87,8 @@ TEST_CASE("Lidar - receive valid data packet") {
         0x78, 0x3F, 0x5A, 0x0B, 0x5A, 0x5B, 0xFD, 0x57, 0x5B, 0xD3, 0x5B, 0x5C,
         0x28, 0x59, 0x5C, 0x28, 0x59, 0x5B, 0xFD, 0x5E, 0x5E, 0x32, 0x35, 0xBC};
 
-    uint16_t sum = 0;
-    for (const uint8_t &b : message) {
-        sum += b;
-    }
-
-    r2d2::mock_usart_c usart;
-    usart.prepare_message(message);
+    auto usart = r2d2::usart::test_usart_c();
+    prepare_message(usart, message);
 
     r2d2::distance::lidar_c lidar(usart);
     REQUIRE(lidar.receive_packet());
