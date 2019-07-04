@@ -1,5 +1,6 @@
 #pragma once
 #include <hwlib.hpp>
+#include "IUnidirectional_distance_sensor"
 
 namespace R2D2::Distance
 {
@@ -11,7 +12,7 @@ namespace R2D2::Distance
      *   This class return the distance measured with the HC-SR04 ultrasone sensor, accurate up to 400 centimeters.
      *   After 400 centimeters measurements are unuseable and should be disgarded.
      */
-    class HC_SR04_c
+    class HC_SR04_c: public IUnidirectional_distance_sensor_c
     {
     private:
         hwlib::pin_in & echo_pin;       //Listens to a high value from returning ultrasone sounds
@@ -23,7 +24,7 @@ namespace R2D2::Distance
         /**
         * return measured distance in centimeters.
         */
-        int16_t get_distance();
+        int16_t get_distance()override;
     };
 }
 
