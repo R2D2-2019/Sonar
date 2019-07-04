@@ -54,8 +54,7 @@ namespace r2d2::distance {
                     for (int count = 0; count < 16; count++) {
                         lidar.receive_packet();
                     }
-                    // Every 100 360 degree measurements we print the distance
-                    // for every half degree.
+                    // Every 100 360 degree measurements we send the smallest distance
                     if (count == 20) {
                         for (int i = 0; i < 720; i++) {
 
