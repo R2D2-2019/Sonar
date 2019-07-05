@@ -20,10 +20,11 @@ namespace r2d2::distance {
             for(unsigned int i = 0; i < N; i++) {
                 if(i > 0 && i <= N) {
                     if(sum[i] < smallest_measurement) {
-                        smallest-measurement = sum[i];
+                        smallest_measurement = sum[i];
                     }
                 }
             }
+            return smallest_measurement;
         }   
     }
 }
