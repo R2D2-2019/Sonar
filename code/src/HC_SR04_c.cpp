@@ -1,6 +1,6 @@
 #include <HC_SR04_c.hpp>
 
-int16_t R2D2::Distance::HC_SR04_c::get_distance(){
+uint16_t R2D2::Distance::HC_SR04_c::get_distance(){
     trigger_pin.write(0);
     hwlib::wait_us(2);
     trigger_pin.write(1);

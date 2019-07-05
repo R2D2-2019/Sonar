@@ -1,6 +1,6 @@
 #pragma once
 #include <hwlib.hpp>
-#include "IUnidirectional_distance_sensor"
+#include "IUnidirectional_distance_sensor.hpp"
 
 namespace R2D2::Distance
 {
@@ -24,7 +24,6 @@ namespace R2D2::Distance
         /**
         * return measured distance in centimeters.
         */
-        int16_t get_distance()override;
+        uint16_t get_distance()override;
     };
 }
-
