@@ -2,7 +2,7 @@
 
 namespace r2d2::distance
 {
-    void lidar_distance_sensor_c::fill_distance_frame(frame_distance_s frame){
+    void lidar_distance_sensor_c::fill_distance_frame(frame_distance_s& frame){
 
         frame.sensor_type = 0; // 0 = lidar, 1 = sonar
         frame.sensor_pov = 0;

@@ -4,9 +4,9 @@
 #include "lidar.hpp"
 #include "hwlib.hpp"
 
-namespace R2D2::Distance
+namespace r2d2::distance
 {
-    class lidar_distance_sensor_c : IDistance_sensor_c {
+    class lidar_distance_sensor_c : public IDistance_sensor_c {
     private:
         lidar_c& lidar;
         uint16_t smallest_value;
@@ -19,6 +19,6 @@ namespace R2D2::Distance
             current_value(0), smallest_value_set_first_time(false),
             pov(_pov){}
 
-        void fill_distance_frame(frame_distance_s frame) override;
+        void fill_distance_frame(frame_distance_s & frame) override;
     };
 }
