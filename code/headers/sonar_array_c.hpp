@@ -6,10 +6,17 @@
 
 
 namespace r2d2::distance {
+     /**
+         * \brief 
+         * This is Template sonar class
+         *
+         * \details
+         * This templated sonar class is able to use a unkown amount of sonars in an array to get distances from.
+         */
     template<uint8_t N>
     class sonar_array_c: public IUnidirectional_distance_sensor_c {
     private:
-        HC_SR04_c sonar[N];
+        HC_SR04_c sonar[N]; // an array of sonar modules.
     public:
     sonar_array_c():
         {}
