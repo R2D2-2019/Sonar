@@ -1,3 +1,5 @@
+#pragma once
+
 #include <hwlib.hpp>
 #include "IDistance_sensor_c.hpp"
 #include "IUnidirectional_distance_sensor.hpp"

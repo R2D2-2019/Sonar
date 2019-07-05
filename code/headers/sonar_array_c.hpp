@@ -1,3 +1,5 @@
+#pragma once
+
 #include <hwlib.hpp>
 #include "IUnidirectional_distance_sensor.hpp"
 #include "HC-SR04_c.hpp"
