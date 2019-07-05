@@ -1,6 +1,6 @@
 #include <hwlib.hpp>
 
-namespace R2D2::Distance
+namespace r2d2::distance
 {
     class IUnidirectional_distance_sensor_c {
     public:

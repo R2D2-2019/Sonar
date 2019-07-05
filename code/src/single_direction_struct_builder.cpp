@@ -1,4 +1,6 @@
 #include "single_direction_struct_builder.hpp"
+#include <frame_types.hpp>
+#include <base_module.hpp>
 
 void r2d2::distance::single_direction_struct_builder_c::fill_distance_frame(frame_distance_s & frame) {
     frame.sensor_type = 1;

@@ -2,7 +2,7 @@
 #include <hwlib.hpp>
 #include "IUnidirectional_distance_sensor.hpp"
 
-namespace R2D2::Distance
+namespace r2d2::distance
 {
         /**
      *  \brief
