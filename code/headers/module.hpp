@@ -7,7 +7,7 @@
 namespace r2d2::distance {
     /// \brief
     /// The module class of the distance module.
-    /// \detail
+    /// \details
     /// In the process function, this module checks if a request of type DISTANCE is received,
     /// if such a request is received the module will use its distance sensor to measure the distance
     /// in as many directions and send it over the canbus in a frame_distance_s frame.
@@ -30,7 +30,7 @@ namespace r2d2::distance {
 
         /// \brief
         /// The process function of this module.
-        /// \detail
+        /// \details
         /// In this function the module checks for a DISTANCE request on the canbus.
         /// If such a request has been received, the module will use the distance sensor
         /// to measure the distance and send it on the canbus in a frame_distance_s frame.

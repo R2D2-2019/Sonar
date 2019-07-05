@@ -7,7 +7,7 @@ namespace r2d2::distance
 {
     /// \brief
     /// An interface for classes that represent a distance sensor.
-    /// \detail
+    /// \details
     /// This interface is used by module_c as the distance sensor.
     class IDistance_sensor_c
     {
