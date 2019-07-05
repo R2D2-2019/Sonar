@@ -11,5 +11,14 @@ namespace r2d2::distance {
     public:
     sonar_array_c():
         {}
+        uint16_t get_distance() {
+            uint32_t sum[N];
+            for(unsigned int i = 0; i < N ; i++) {
+                sum[i] = sonar[i].get_distance();
+            }
+            for(unsigned int i = 0; i < N; i++) {
+                
+            }
+        }   
     }
 }
