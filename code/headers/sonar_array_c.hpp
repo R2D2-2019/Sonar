@@ -18,8 +18,15 @@ namespace r2d2::distance {
     private:
         HC_SR04_c sonar[N]; // an array of sonar modules.
     public:
+    /// \brief
+    /// The constructor of the sonar array.
+    /// \param no parameters are given for the default constructor.
+    // 
     sonar_array_c():
         {}
+     /// \brief
+    /// function that returns a distance.
+    /// \details function that calls every sonar module and returns the smallest measured distance.
         uint16_t get_distance() {
             uint32_t sum[N];
             for(unsigned int i = 0; i < N ; i++) {
