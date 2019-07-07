@@ -26,9 +26,7 @@ int main(void) {
 
     auto lidar = r2d2::distance::lidar_c(usart);
 
-    distance::module_c module(comm, lidar);
 
     for (;;) {
-        module.process();
     }
 }
